@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GymLife - Hồ sơ cá nhân</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #FF6600;
+      --primary-hover: #FF8533;
+      --dark-bg: #121212;
+      --card-bg: #1E1E1E;
+      --input-bg: #2A2A2A;
+      --text: #FFFFFF;
+      --text-secondary: #AAAAAA;
+    }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: var(--dark-bg);
+      color: var(--text);
+      line-height: 1.6;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+    
+    .container {
+      width: 100%;
+      max-width: 480px;
+    }
+    
+    .logo {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    
+    .logo-text {
+      font-size: 36px;
+      font-weight: 800;
+      color: var(--primary);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 5px;
+    }
+    
+    .logo-subtitle {
+      color: var(--text-secondary);
+      font-size: 14px;
+    }
+    
+    .profile-card {
+      background: var(--card-bg);
+      border-radius: 16px;
+      padding: 30px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+    }
+    
+    .card-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 25px;
+    }
+    
+    .card-header i {
+      font-size: 24px;
+      color: var(--primary);
+      margin-right: 12px;
+    }
+    
+    .card-header h2 {
+      font-size: 22px;
+      font-weight: 600;
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+      position: relative;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+    
+    input, select {
+      width: 100%;
+      padding: 14px 16px;
+      border: none;
+      border-radius: 10px;
+      background: var(--input-bg);
+      color: var(--text);
+      font-size: 15px;
+      transition: all 0.3s ease;
+    }
+    
+    input:focus, select:focus {
+      outline: none;
+      box-shadow: 0 0 0 2px var(--primary);
+    }
+    
+    input:hover, select:hover {
+      background: #333333;
+    }
+    
+    .input-icon {
+      position: absolute;
+      right: 15px;
+      top: 42px;
+      color: var(--text-secondary);
+    }
+    
+    .btn {
+      width: 100%;
+      padding: 16px;
+      background: var(--primary);
+      color: white;
+      font-weight: 600;
+      font-size: 16px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    .btn i {
+      margin-right: 8px;
+    }
+    
+    .btn:hover {
+      background: var(--primary-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(255, 102, 0, 0.3);
+    }
+    
+    .btn:active {
+      transform: translateY(0);
+    }
+    
+    .message {
+      text-align: center;
+      margin-top: 20px;
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 14px;
+      display: none;
+    }
+    
+    .success {
+      background: rgba(76, 175, 80, 0.2);
+      color: #4CAF50;
+      display: block;
+    }
+    
+    .error {
+      background: rgba(244, 67, 54, 0.2);
+      color: #F44336;
+      display: block;
+    }
+    
+    .profile-stats {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 25px;
+      padding-top: 20px;
+      border-top: 1px solid #333;
+    }
+    
+    .stat {
+      text-align: center;
+    }
+    
+    .stat-value {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--primary);
+    }
+    
+    .stat-label {
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+    
+    @media (max-width: 500px) {
+      .profile-card {
+        padding: 20px;
+      }
+      
+      .logo-text {
+        font-size: 30px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="logo">
+      <div class="logo-text">GymLife</div>
+      <div class="logo-subtitle">Nâng tầm thể chất - Nâng tầm cuộc sống</div>
+    </div>
+    
+    <div class="profile-card">
+      <div class="card-header">
+        <i class="fas fa-user-circle"></i>
+        <h2>Hồ sơ cá nhân</h2>
+      </div>
+      
+      <div class="form-group">
+        <label for="name">Họ và tên</label>
+        <input type="text" id="name" placeholder="Nhập họ tên của bạn">
+        <span class="input-icon"><i class="fas fa-user"></i></span>
+      </div>
+      
+      <div class="form-group">
+        <label for="gender">Giới tính</label>
+        <select id="gender">
+          <option value="male">Nam</option>
+          <option value="female">Nữ</option>
+        </select>
+        <span class="input-icon"><i class="fas fa-venus-mars"></i></span>
+      </div>
+      
+      <div class="form-group">
+        <label for="dob">Ngày sinh</label>
+        <input type="date" id="dob">
+        <span class="input-icon"><i class="fas fa-calendar-day"></i></span>
+      </div>
+      
+      <div class="form-group">
+        <label for="height">Chiều cao (cm)</label>
+        <input type="number" id="height" placeholder="VD: 175" min="100" max="250">
+        <span class="input-icon"><i class="fas fa-arrows-alt-v"></i></span>
+      </div>
+      
+      <div class="form-group">
+        <label for="weight">Cân nặng (kg)</label>
+        <input type="number" id="weight" placeholder="VD: 68" min="30" max="200">
+        <span class="input-icon"><i class="fas fa-weight"></i></span>
+      </div>
+      
+      <div class="form-group">
+        <label for="goal">Mục tiêu tập luyện</label>
+        <input type="text" id="goal" placeholder="VD: Giảm 5kg trong 3 tháng">
+        <span class="input-icon"><i class="fas fa-bullseye"></i></span>
+      </div>
+      
+      <button class="btn" onclick="updateProfile()">
+        <i class="fas fa-sync-alt"></i> Cập nhật hồ sơ
+      </button>
+      
+      <div id="msg" class="message"></div>
+      
+      <div class="profile-stats">
+        <div class="stat">
+          <div class="stat-value" id="bmi-value">--</div>
+          <div class="stat-label">Chỉ số BMI</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value" id="age-value">--</div>
+          <div class="stat-label">Tuổi</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value" id="status-value">--</div>
+          <div class="stat-label">Tình trạng</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const user_id = localStorage.getItem("user_id");
+    
+    // Tính toán tuổi từ ngày sinh
+    function calculateAge(dob) {
+      if (!dob) return '--';
+      const birthDate = new Date(dob);
+      const diff = Date.now() - birthDate.getTime();
+      const ageDate = new Date(diff);
+      return Math.abs(ageDate.getUTCFullYear() - 1970);
+    }
+    
+    // Tính chỉ số BMI
+    function calculateBMI(weight, height) {
+      if (!weight || !height) return '--';
+      const heightInMeter = height / 100;
+      return (weight / (heightInMeter * heightInMeter)).toFixed(1);
+    }
+    
+    // Phân loại tình trạng cân nặng dựa trên BMI
+    function getWeightStatus(bmi) {
+      if (!bmi || bmi === '--') return '--';
+      
+      if (bmi < 18.5) return 'Thiếu cân';
+      if (bmi < 23) return 'Bình thường';
+      if (bmi < 25) return 'Tiền béo phì';
+      if (bmi < 30) return 'Béo phì độ I';
+      return 'Béo phì độ II';
+    }
+    
+    // Cập nhật thống kê
+    function updateStats() {
+      const dob = document.getElementById('dob').value;
+      const height = document.getElementById('height').value;
+      const weight = document.getElementById('weight').value;
+      
+      const age = calculateAge(dob);
+      const bmi = calculateBMI(weight, height);
+      const status = getWeightStatus(bmi);
+      
+      document.getElementById('age-value').textContent = age;
+      document.getElementById('bmi-value').textContent = bmi;
+      document.getElementById('status-value').textContent = status;
+    }
+    
+    // Thêm sự kiện input cho các trường liên quan
+    ['dob', 'height', 'weight'].forEach(id => {
+      document.getElementById(id).addEventListener('input', updateStats);
+    });
+
+    async function loadProfile() {
+      try {
+        const res = await fetch(`http://localhost:5000/api/profile/${user_id}`);
+        const data = await res.json();
+        
+        if (res.ok) {
+          document.getElementById('name').value = data.name || "";
+          document.getElementById('gender').value = data.gender || "male";
+          document.getElementById('dob').value = data.dob || "";
+          document.getElementById('height').value = data.height || "";
+          document.getElementById('weight').value = data.weight || "";
+          document.getElementById('goal').value = data.goal || "";
+          
+          // Cập nhật thống kê sau khi tải dữ liệu
+          setTimeout(updateStats, 100);
+        } else {
+          showMessage(data.error, 'error');
+        }
+      } catch (error) {
+        showMessage('Lỗi kết nối đến server', 'error');
+      }
+    }
+
+    async function updateProfile() {
+      const name = document.getElementById('name').value;
+      const gender = document.getElementById('gender').value;
+      const dob = document.getElementById('dob').value;
+      const height = document.getElementById('height').value;
+      const weight = document.getElementById('weight').value;
+      const goal = document.getElementById('goal').value;
+      
+      // Kiểm tra dữ liệu đầu vào cơ bản
+      if (!name.trim()) {
+        showMessage('Vui lòng nhập họ tên', 'error');
+        return;
+      }
+      
+      if (!height || height < 100 || height > 250) {
+        showMessage('Chiều cao không hợp lệ (100-250cm)', 'error');
+        return;
+      }
+      
+      if (!weight || weight < 30 || weight > 200) {
+        showMessage('Cân nặng không hợp lệ (30-200kg)', 'error');
+        return;
+      }
+
+      const payload = { name, gender, dob, height, weight, goal };
+
+      try {
+        const res = await fetch(`http://localhost:5000/api/profile/${user_id}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+
+        const msg = await res.json();
+        
+        if (res.ok) {
+          showMessage('Cập nhật hồ sơ thành công!', 'success');
+          updateStats(); // Cập nhật lại thống kê
+        } else {
+          showMessage(msg.error || 'Có lỗi xảy ra', 'error');
+        }
+      } catch (error) {
+        showMessage('Lỗi kết nối đến server', 'error');
+      }
+    }
+    
+    // Hiển thị thông báo
+    function showMessage(text, type) {
+      const msgElement = document.getElementById('msg');
+      msgElement.textContent = text;
+      msgElement.className = 'message ' + type;
+      
+      // Ẩn thông báo sau 5 giây
+      setTimeout(() => {
+        msgElement.style.opacity = '0';
+        setTimeout(() => {
+          msgElement.className = 'message';
+          msgElement.style.opacity = '1';
+        }, 1000);
+      }, 5000);
+    }
+
+    // Tải hồ sơ khi trang được load
+    document.addEventListener('DOMContentLoaded', loadProfile);
+  </script>
+</body>
+</html>

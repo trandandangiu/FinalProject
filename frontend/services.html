@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="zxx">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="GymLife - Nền tảng thể hình toàn diện">
+    <meta name="keywords" content="Gym, Fitness, Workout, Nutrition, Health">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>GymLife - Dịch Vụ Tập Luyện</title>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css?family=Muli:300,400,500,600,700,800,900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Oswald:300,400,500,600,700&display=swap" rel="stylesheet">
+
+    <!-- Css Styles -->
+    <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="css/font-awesome.min.css" type="text/css">
+    <link rel="stylesheet" href="css/flaticon.css" type="text/css">
+    <link rel="stylesheet" href="css/owl.carousel.min.css" type="text/css">
+    <link rel="stylesheet" href="css/barfiller.css" type="text/css">
+    <link rel="stylesheet" href="css/magnific-popup.css" type="text/css">
+    <link rel="stylesheet" href="css/slicknav.min.css" type="text/css">
+    <link rel="stylesheet" href="css/style.css" type="text/css">
+    
+    <style>
+        :root {
+            --primary: #FF6600;
+            --primary-hover: #FF8533;
+        }
+        
+        .workout-services {
+            padding: 60px 0;
+        }
+        
+        .workout-category {
+            margin-bottom: 50px;
+        }
+        
+        .workout-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            transition: transform 0.3s;
+            height: 100%;
+        }
+        
+        .workout-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .workout-img {
+            height: 200px;
+            overflow: hidden;
+        }
+        
+        .workout-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        
+        .workout-card:hover .workout-img img {
+            transform: scale(1.05);
+        }
+        
+        .workout-info {
+            padding: 20px;
+        }
+        
+        .workout-muscle {
+            color: var(--primary);
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .workout-calories {
+            color: #666;
+            margin-bottom: 15px;
+        }
+        
+        .workout-difficulty {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+            margin-bottom: 10px;
+        }
+        
+        .difficulty-beginner {
+            background: #e6f7ee;
+            color: #00a76f;
+        }
+        
+        .difficulty-intermediate {
+            background: #e8f4ff;
+            color: #006cff;
+        }
+        
+        .difficulty-advanced {
+            background: #ffecef;
+            color: #ff2e4d;
+        }
+        
+        .add-to-plan {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.3s;
+            width: 100%;
+        }
+        
+        .add-to-plan:hover {
+            background: var(--primary-hover);
+        }
+        
+        .workout-filter {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+        
+        .filter-title {
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+        
+        .filter-group {
+            margin-bottom: 15px;
+        }
+        
+        .filter-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+        
+        .filter-group select, .filter-group input {
+            width: 100%;
+            padding: 8px 12px;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+        }
+        
+        .apply-filter {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.3s;
+            width: 100%;
+        }
+        
+        .apply-filter:hover {
+            background: var(--primary-hover);
+        }
+        
+        .my-workout-plan {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+        
+        .plan-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .plan-item:last-child {
+            border-bottom: none;
+        }
+        
+        .remove-exercise {
+            color: #ff2e4d;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        .save-plan {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.3s;
+            margin-top: 15px;
+        }
+        
+        .save-plan:hover {
+            background: var(--primary-hover);
+        }
+        
+        @media (max-width: 768px) {
+            .workout-card {
+                margin-bottom: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Page Preloder -->
+    <div id="preloder">
+        <div class="loader"></div>
+    </div>
+
+    <!-- Offcanvas Menu Section Begin -->
+    <div class="offcanvas-menu-overlay"></div>
+    <div class="offcanvas-menu-wrapper">
+        <div class="canvas-close">
+            <i class="fa fa-close"></i>
+        </div>
+        <div class="canvas-search search-switch">
+            <i class="fa fa-search"></i>
+        </div>
+        <nav class="canvas-menu mobile-menu">
+            <ul>
+                <li><a href="./index.html">Home</a></li>
+                <li><a href="./about.html">About Us</a></li>
+                <li><a href="./services.html">Workout Service</a></li>
+                <li><a href="./blog.html">Nutrition Service</a></li>
+                <li><a href="./contact.html">User Service</a></li>
+                <li><a href="./dashboard.html">Dashboard</a></li>
+                <li><a href="./progress.html">Progress Tracking</a></li>
+                <li><a href="./recommendation.html">Recommendation</a></li>
+            </ul>
+        </nav>
+        <div id="mobile-menu-wrap"></div>
+        <div class="canvas-social">
+            <a href="#"><i class="fa fa-facebook"></i></a>
+            <a href="#"><i class="fa fa-twitter"></i></a>
+            <a href="#"><i class="fa fa-youtube-play"></i></a>
+            <a href="#"><i class="fa fa-instagram"></i></a>
+        </div>
+    </div>
+    <!-- Offcanvas Menu Section End -->
+
+    <!-- Header Section Begin -->
+    <header class="header-section">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="logo">
+                        <a href="./index.html">
+                            <img src="img/logo.png" alt="GymLife">
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <nav class="nav-menu">
+                        <ul>
+                            <li><a href="./index.html">Home</a></li>
+                            <li><a href="./about.html">About Us</a></li>
+                            <li class="active"><a href="./services.html">Workout Service</a></li>
+                            <li><a href="./blog.html">Nutrition Service</a></li>
+                            <li><a href="./contact.html">User Service</a></li>
+                            <li><a href="./dashboard.html">Dashboard</a></li>
+                            <li><a href="./progress.html">Progress</a></li>
+                            <li><a href="./recommendation.html">Recommendation</a></li>
+                        </ul>
+                    </nav>
+                </div>
+                <div class="col-lg-3">
+                    <div class="top-option">
+                        <div class="to-search search-switch">
+                            <i class="fa fa-search"></i>
+                        </div>
+                        <div class="to-social">
+                            <a href="#"><i class="fa fa-facebook"></i></a>
+                            <a href="#"><i class="fa fa-twitter"></i></a>
+                            <a href="#"><i class="fa fa-youtube-play"></i></a>
+                            <a href="#"><i class="fa fa-instagram"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="canvas-open">
+                <i class="fa fa-bars"></i>
+            </div>
+        </div>
+    </header>
+    <!-- Header End -->
+
+    <!-- Breadcrumb Section Begin -->
+    <section class="breadcrumb-section set-bg" data-setbg="img/breadcrumb-bg.jpg">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <div class="breadcrumb-text">
+                        <h2>Dịch Vụ Tập Luyện</h2>
+                        <div class="bt-option">
+                            <a href="./index.html">Trang Chủ</a>
+                            <span>Dịch Vụ Tập Luyện</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Breadcrumb Section End -->
+
+    <!-- Workout Services Section Begin -->
+    <section class="workout-services spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="section-title">
+                        <span>Kho Bài Tập</span>
+                        <h2>KHÁM PHÁ BÀI TẬP PHÙ HỢP</h2>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <!-- Filter Section -->
+                <div class="col-lg-3">
+                    <div class="workout-filter">
+                        <h4 class="filter-title">Bộ Lọc</h4>
+                        
+                        <div class="filter-group">
+                            <label>Nhóm Cơ</label>
+                            <select id="muscle-group">
+                                <option value="">Tất cả</option>
+                                <option value="chest">Ngực</option>
+                                <option value="back">Lưng</option>
+                                <option value="legs">Chân</option>
+                                <option value="arms">Tay</option>
+                                <option value="shoulders">Vai</option>
+                                <option value="core">Bụng</option>
+                            </select>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label>Độ Khó</label>
+                            <select id="difficulty">
+                                <option value="">Tất cả</option>
+                                <option value="beginner">Mới bắt đầu</option>
+                                <option value="intermediate">Trung bình</option>
+                                <option value="advanced">Nâng cao</option>
+                            </select>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label>Thiết Bị</label>
+                            <select id="equipment">
+                                <option value="">Tất cả</option>
+                                <option value="bodyweight">Không cần thiết bị</option>
+                                <option value="dumbbell">Tạ đơn</option>
+                                <option value="barbell">Tạ đòn</option>
+                                <option value="machine">Máy tập</option>
+                            </select>
+                        </div>
+                        
+                        <button class="apply-filter">Áp dụng</button>
+                    </div>
+                    
+                    <div class="my-workout-plan">
+                        <h4 class="filter-title">Kế Hoạch Tập Của Tôi</h4>
+                        <div id="plan-items">
+                            <p class="text-center">Chưa có bài tập nào</p>
+                        </div>
+                        <button class="save-plan">Lưu Kế Hoạch</button>
+                    </div>
+                </div>
+                
+                <!-- Workout List -->
+                <div class="col-lg-9">
+                    <div class="workout-category">
+                        <h3>Bài Tập Phổ Biến</h3>
+                        <div class="row">
+                            <div class="col-lg-4 col-md-6">
+                                <div class="workout-card">
+                                    <div class="workout-img">
+                                        <img src="img/classes/class-1.jpg" alt="Bench Press">
+                                    </div>
+                                    <div class="workout-info">
+                                        <div class="workout-muscle">Ngực, Tay</div>
+                                        <span class="workout-difficulty difficulty-intermediate">Trung bình</span>
+                                        <h5>Bench Press</h5>
+                                        <div class="workout-calories">~200 calories/30 phút</div>
+                                        <button class="add-to-plan" data-exercise="Bench Press">Thêm vào kế hoạch</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-6">
+                                <div class="workout-card">
+                                    <div class="workout-img">
+                                        <img src="img/classes/class-2.jpg" alt="Squat">
+                                    </div>
+                                    <div class="workout-info">
+                                        <div class="workout-muscle">Chân, Mông</div>
+                                        <span class="workout-difficulty difficulty-beginner">Mới bắt đầu</span>
+                                        <h5>Squat</h5>
+                                        <div class="workout-calories">~180 calories/30 phút</div>
+                                        <button class="add-to-plan" data-exercise="Squat">Thêm vào kế hoạch</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-6">
+                                <div class="workout-card">
+                                    <div class="workout-img">
+                                        <img src="img/classes/class-3.jpg" alt="Deadlift">
+                                    </div>
+                                    <div class="workout-info">
+                                        <div class="workout-muscle">Lưng, Chân</div>
+                                        <span class="workout-difficulty difficulty-advanced">Nâng cao</span>
+                                        <h5>Deadlift</h5>
+                                        <div class="workout-calories">~220 calories/30 phút</div>
+                                        <button class="add-to-plan" data-exercise="Deadlift">Thêm vào kế hoạch</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="workout-category">
+                        <h3>Bài Tập Không Cần Thiết Bị</h3>
+                        <div class="row">
+                            <div class="col-lg-4 col-md-6">
+                                <div class="workout-card">
+                                    <div class="workout-img">
+                                        <img src="img/services/services-1.jpg" alt="Push-up">
+                                    </div>
+                                    <div class="workout-info">
+                                        <div class="workout-muscle">Ngực, Tay</div>
+                                        <span class="workout-difficulty difficulty-beginner">Mới bắt đầu</span>
+                                        <h5>Push-up</h5>
+                                        <div class="workout-calories">~150 calories/30 phút</div>
+                                        <button class="add-to-plan" data-exercise="Push-up">Thêm vào kế hoạch</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-6">
+                                <div class="workout-card">
+                                    <div class="workout-img">
+                                        <img src="img/services/services-2.jpg" alt="Plank">
+                                    </div>
+                                    <div class="workout-info">
+                                        <div class="workout-muscle">Bụng</div>
+                                        <span class="workout-difficulty difficulty-beginner">Mới bắt đầu</span>
+                                        <h5>Plank</h5>
+                                        <div class="workout-calories">~100 calories/30 phút</div>
+                                        <button class="add-to-plan" data-exercise="Plank">Thêm vào kế hoạch</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-6">
+                                <div class="workout-card">
+                                    <div class="workout-img">
+                                        <img src="img/services/services-3.jpg" alt="Lunges">
+                                    </div>
+                                    <div class="workout-info">
+                                        <div class="workout-muscle">Chân, Mông</div>
+                                        <span class="workout-difficulty difficulty-intermediate">Trung bình</span>
+                                        <h5>Lunges</h5>
+                                        <div class="workout-calories">~160 calories/30 phút</div>
+                                        <button class="add-to-plan" data-exercise="Lunges">Thêm vào kế hoạch</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Workout Services Section End -->
+
+    <!-- Footer Section Begin -->
+    <section class="footer-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="fs-about">
+                        <div class="fa-logo">
+                            <a href="#"><img src="img/logo.png" alt="GymLife"></a>
+                        </div>
+                        <p>GymLife - Nền tảng toàn diện cho sức khỏe và thể hình của bạn. Theo dõi tiến trình, nhận gợi ý tập luyện và dinh dưỡng phù hợp.</p>
+                        <div class="fa-social">
+                            <a href="#"><i class="fa fa-facebook"></i></a>
+                            <a href="#"><i class="fa fa-twitter"></i></a>
+                            <a href="#"><i class="fa fa-youtube-play"></i></a>
+                            <a href="#"><i class="fa fa-instagram"></i></a>
+                            <a href="#"><i class="fa  fa-envelope-o"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-3 col-sm-6">
+                    <div class="fs-widget">
+                        <h4>Liên kết</h4>
+                        <ul>
+                            <li><a href="./about.html">Về chúng tôi</a></li>
+                            <li><a href="./blog.html">Dinh dưỡng</a></li>
+                            <li><a href="./services.html">Bài tập</a></li>
+                            <li><a href="./contact.html">Liên hệ</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-3 col-sm-6">
+                    <div class="fs-widget">
+                        <h4>Hỗ trợ</h4>
+                        <ul>
+                            <li><a href="./login.html">Đăng nhập</a></li>
+                            <li><a href="./register.html">Đăng ký</a></li>
+                            <li><a href="./dashboard.html">Dashboard</a></li>
+                            <li><a href="./contact.html">Liên hệ</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="fs-widget">
+                        <h4>Mẹo & Hướng dẫn</h4>
+                        <div class="fw-recent">
+                            <h6><a href="#">Tập luyện thể chất giúp ngăn ngừa trầm cảm, lo âu</a></h6>
+                            <ul>
+                                <li>3 phút đọc</li>
+                                <li>20 Bình luận</li>
+                            </ul>
+                        </div>
+                        <div class="fw-recent">
+                            <h6><a href="#">Fitness: Bài tập tốt nhất để giảm mỡ bụng</a></h6>
+                            <ul>
+                                <li>3 phút đọc</li>
+                                <li>15 Bình luận</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <div class="copyright-text">
+                        <p>Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | GymLife</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Footer Section End -->
+
+    <!-- Search model Begin -->
+    <div class="search-model">
+        <div class="h-100 d-flex align-items-center justify-content-center">
+            <div class="search-close-switch">+</div>
+            <form class="search-model-form">
+                <input type="text" id="search-input" placeholder="Search here.....">
+            </form>
+        </div>
+    </div>
+    <!-- Search model end -->
+
+    <!-- Js Plugins -->
+    <script src="js/jquery-3.3.1.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/jquery.magnific-popup.min.js"></script>
+    <script src="js/masonry.pkgd.min.js"></script>
+    <script src="js/jquery.barfiller.js"></script>
+    <script src="js/jquery.slicknav.js"></script>
+    <script src="js/owl.carousel.min.js"></script>
+    <script src="js/main.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const BASE_URL = "http://localhost:5000/api";
+    let token = localStorage.getItem("access_token");
+    let currentSessionId = null;
+
+    // Ánh xạ thiết bị sang tiếng Việt
+    const equipmentTranslations = {
+        'body weight': 'Tập không dụng cụ',
+        'cable': 'Máy cáp',
+        'barbell': 'Tạ đòn',
+        'dumbbell': 'Tạ đơn',
+        'band': 'Dây kháng lực',
+        'kettlebell': 'Tạ ấm',
+        'ez barbell': 'Tạ đòn cong',
+        'medicine ball': 'Bóng tạ',
+        'stability ball': 'Bóng tập',
+        'leverage machine': 'Máy tập',
+        'assisted': 'Máy hỗ trợ',
+        'rope': 'Dây thừng',
+        'upper body ergometer': 'Máy tập thân trên',
+        'olympic barbell': 'Tạ đòn Olympic',
+        'weighted': 'Tạ có trọng lượng',
+        'bosu ball': 'Bóng Bosu'
+    };
+
+    // Hàm gọi API chung
+    async function api(url, method="GET", body=null) {
+        const headers = { "Content-Type": "application/json" };
+        if (token && token !== "null" && token !== "undefined") {
+            headers["Authorization"] = `Bearer ${token}`;
+        }
+
+        const res = await fetch(url, {
+            method,
+            headers,
+            body: body ? JSON.stringify(body) : null
+        });
+
+        if (!res.ok) {
+            console.error("❌ API Error:", res.status, await res.text());
+            return [];
+        }
+
+        return res.json();
+    }
+
+    // Load exercises
+    async function loadExercises(filters={}) {
+        let url = `${BASE_URL}/workouts`;
+        const params = new URLSearchParams(filters).toString();
+        if (params) url += `?${params}`;
+        const data = await api(url);
+        renderExercises(data.exercises || []);
+    }
+
+    // Render danh sách bài tập
+    function renderExercises(exercises) {
+        const list = document.querySelector(".workout-category .row");
+        list.innerHTML = "";
+        if (!exercises || exercises.length === 0) {
+            list.innerHTML = "<p>⚠️ Không có bài tập nào phù hợp</p>";
+            return;
+        }
+        exercises.forEach(ex => {
+            const col = document.createElement("div");
+            col.className = "col-lg-4 col-md-6";
+            const equipmentInVietnamese = equipmentTranslations[ex.equipment] || ex.equipment;
+
+            col.innerHTML = `
+                <div class="workout-card">
+                    <div class="workout-img"><img src="img/classes/class-1.jpg"></div>
+                    <div class="workout-info">
+                        <div class="workout-muscle">${ex.body_part}</div>
+                        <h5>${ex.name}</h5>
+                        <div class="workout-equipment">Thiết bị: ${equipmentInVietnamese}</div>
+                        <div class="workout-calories">Nhóm cơ: ${ex.target}</div>
+                        <button class="add-to-plan" data-id="${ex.exercise_id}" data-name="${ex.name}">
+                            Thêm vào kế hoạch
+                        </button>
+                    </div>
+                </div>`;
+            list.appendChild(col);
+        });
+
+        document.querySelectorAll(".add-to-plan").forEach(btn => {
+            btn.addEventListener("click", ()=> addToPlan(btn.dataset.id, btn.dataset.name));
+        });
+    }
+
+    // Tạo session nếu chưa có
+    async function createSession() {
+        const today = new Date().toISOString().split("T")[0];
+        const res = await api(`${BASE_URL}/workouts/session`, "POST", {
+            date: today, duration_min: 30, total_calories: 0
+        });
+        if (res && res.session_id) {
+            currentSessionId = res.session_id;
+        }
+    }
+
+    // Thêm bài tập vào session
+    async function addToPlan(exId, exName) {
+        if (!token) {
+            alert("⚠️ Vui lòng đăng nhập để lưu kế hoạch tập luyện!");
+            return;
+        }
+        if (!currentSessionId) await createSession();
+
+        await api(`${BASE_URL}/workouts/session_details`, "POST", {
+            session_id: currentSessionId,
+            exercise_id: parseInt(exId),
+            sets: 3, reps: 12, duration_min: 10, calories_burned: 100
+        });
+
+        const planItems = document.getElementById("plan-items");
+        if (planItems.querySelector("p")) planItems.innerHTML = "";
+        const item = document.createElement("div");
+        item.className = "plan-item";
+        item.innerHTML = `<span>${exName}</span><span class="remove-exercise">X</span>`;
+        item.querySelector(".remove-exercise").addEventListener("click", ()=> item.remove());
+        planItems.appendChild(item);
+
+        alert(`✅ Đã thêm "${exName}" vào kế hoạch!`);
+    }
+
+    // Lưu kế hoạch
+    document.querySelector(".save-plan").addEventListener("click", function() {
+        if (!token) {
+            alert("⚠️ Vui lòng đăng nhập để lưu kế hoạch!");
+            return;
+        }
+        if (!currentSessionId) {
+            alert("⚠️ Chưa có buổi tập nào!");
+            return;
+        }
+        alert(`✅ Kế hoạch đã lưu với session ID: ${currentSessionId}`);
+    });
+
+    // Áp dụng bộ lọc
+    document.querySelector(".apply-filter").addEventListener("click", function() {
+        const muscleGroup = document.getElementById('muscle-group').value;
+        const equipment = document.getElementById('equipment').value;
+        loadExercises({ body_part: muscleGroup, equipment });
+    });
+
+    // Load mặc định danh sách bài tập
+    loadExercises({});
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>GymLife Chat Assistant</title>
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <style>
+    body { font-family: Arial, sans-serif; background:#f5f5f5; }
+    .chat-box { max-width:600px; margin:50px auto; background:#fff; border-radius:10px; padding:20px; }
+    .messages { height:400px; overflow-y:auto; border:1px solid #ddd; padding:10px; margin-bottom:10px; }
+    .message.user { text-align:right; color:#fff; background:#FF6600; margin:5px; padding:8px; border-radius:8px; display:inline-block; }
+    .message.bot { text-align:left; background:#eee; margin:5px; padding:8px; border-radius:8px; display:inline-block; }
+  </style>
+</head>
+<body>
+  <div class="chat-box">
+    <h3>GymLife AI Assistant</h3>
+    <div id="messages" class="messages"></div>
+    <div class="input-group">
+      <input type="text" id="chatInput" class="form-control" placeholder="Nhập tin nhắn...">
+      <div class="input-group-append">
+        <button id="sendBtn" class="btn btn-primary">Gửi</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const API_URL = "http://localhost:5000/api/chat";
+    const token = localStorage.getItem("access_token"); // token lưu sau login
+
+    const messagesDiv = document.getElementById("messages");
+    const chatInput = document.getElementById("chatInput");
+    const sendBtn = document.getElementById("sendBtn");
+
+    function addMessage(text, sender){
+      const div = document.createElement("div");
+      div.className = "message " + sender;
+      div.textContent = text;
+      messagesDiv.appendChild(div);
+      messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    }
+
+    sendBtn.addEventListener("click", async () => {
+      const msg = chatInput.value.trim();
+      if(!msg) return;
+      addMessage(msg, "user");
+      chatInput.value = "";
+
+      const res = await fetch(API_URL, {
+        method:"POST",
+        headers:{
+          "Content-Type":"application/json",
+          "Authorization":"Bearer " + token
+        },
+        body: JSON.stringify({message: msg})
+      });
+      const data = await res.json();
+      addMessage(data.response || "⚠️ Lỗi server", "bot");
+    });
+  </script>
+</body>
+</html>

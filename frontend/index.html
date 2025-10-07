@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="zxx">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="GymLife - Nền tảng thể hình toàn diện">
+    <meta name="keywords" content="Gym, Fitness, Workout, Nutrition, Health">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>GymLife - Trang chủ</title>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css?family=Muli:300,400,500,600,700,800,900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Oswald:300,400,500,600,700&display=swap" rel="stylesheet">
+
+    <!-- Css Styles -->
+    <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="css/font-awesome.min.css" type="text/css">
+    <link rel="stylesheet" href="css/flaticon.css" type="text/css">
+    <link rel="stylesheet" href="css/owl.carousel.min.css" type="text/css">
+    <link rel="stylesheet" href="css/barfiller.css" type="text/css">
+    <link rel="stylesheet" href="css/magnific-popup.css" type="text/css">
+    <link rel="stylesheet" href="css/slicknav.min.css" type="text/css">
+    <link rel="stylesheet" href="css/style.css" type="text/css">
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <style>
+        :root {
+            --primary: #FF6600;
+            --primary-hover: #FF8533;
+            --dark-bg: #121212;
+            --card-bg: #1E1E1E;
+            --text: #FFFFFF;
+            --text-secondary: #AAAAAA;
+        }
+        
+        .dashboard-section {
+            padding: 60px 0;
+            background: #f8f9fa;
+        }
+        
+        .dashboard-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            height: 100%;
+        }
+        
+        .dashboard-card h3 {
+            color: var(--primary);
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+        
+        .calories-card {
+            background: linear-gradient(135deg, #FF6600, #FF8533);
+            color: white;
+        }
+        
+        .calories-card h3, .calories-card h4 {
+            color: white;
+        }
+        
+        .progress-chart {
+            height: 250px;
+            position: relative;
+        }
+        
+        .ai-chat-box {
+            background: var(--card-bg);
+            color: var(--text);
+            border-radius: 12px;
+            padding: 20px;
+            height: 100%;
+        }
+        
+        .ai-chat-box h4 {
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+        
+        .chat-messages {
+            height: 200px;
+            overflow-y: auto;
+            margin-bottom: 15px;
+            padding: 10px;
+            background: #2A2A2A;
+            border-radius: 8px;
+        }
+        
+        .message {
+            margin-bottom: 10px;
+            padding: 8px 12px;
+            border-radius: 8px;
+            max-width: 80%;
+        }
+        
+        .user-message {
+            background: var(--primary);
+            color: white;
+            margin-left: auto;
+        }
+        
+        .ai-message {
+            background: #3A3A3A;
+            color: var(--text);
+        }
+        
+        .chat-input {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .chat-input input {
+            flex: 1;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+        
+        .chat-input button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 15px;
+            cursor: pointer;
+        }
+        
+        .personal-info {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .info-item {
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+        
+        .info-item:last-child {
+            border-bottom: none;
+        }
+        
+        .info-label {
+            font-weight: 600;
+            color: #555;
+        }
+        
+        .info-value {
+            color: #333;
+        }
+        
+        .update-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+        
+        .update-btn:hover {
+            background: var(--primary-hover);
+        }
+        
+        .exercise-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            transition: transform 0.3s;
+        }
+        
+        .exercise-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .exercise-img {
+            height: 200px;
+            overflow: hidden;
+        }
+        
+        .exercise-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        
+        .exercise-card:hover .exercise-img img {
+            transform: scale(1.05);
+        }
+        
+        .exercise-info {
+            padding: 20px;
+        }
+        
+        .exercise-muscle {
+            color: var(--primary);
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .exercise-calories {
+            color: #666;
+            margin-bottom: 15px;
+        }
+        
+        .add-to-workout {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+        
+        .add-to-workout:hover {
+            background: var(--primary-hover);
+        }
+        
+        .nutrition-search {
+            margin-bottom: 20px;
+        }
+        
+        .nutrition-search input {
+            width: 100%;
+            padding: 12px 15px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+        
+        .meal-today {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .meal-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .meal-item:last-child {
+            border-bottom: none;
+        }
+        
+        .user-menu {
+            display: inline-block;
+            margin-right: 10px;
+        }
+        .user-menu .btn {
+            font-size: 14px;
+            padding: 5px 10px;
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-card {
+                margin-bottom: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Page Preloder -->
+    <div id="preloder">
+        <div class="loader"></div>
+    </div>
+
+    <!-- Offcanvas Menu Section Begin -->
+    <div class="offcanvas-menu-overlay"></div>
+    <div class="offcanvas-menu-wrapper">
+        <div class="canvas-close">
+            <i class="fa fa-close"></i>
+        </div>
+        <div class="canvas-search search-switch">
+            <i class="fa fa-search"></i>
+        </div>
+        <nav class="canvas-menu mobile-menu">
+            <ul>
+                <li><a href="./index.html">Home</a></li>
+                <li><a href="./about.html">About Us</a></li>
+                <li><a href="./services.html">Workout Service</a></li>
+                <li><a href="./blog.html">Nutrition Service</a></li>
+                <li><a href="./contact.html">User Service</a></li>
+                <li><a href="./dashboard.html">Dashboard</a></li>
+                <li><a href="./progress.html">Progress Tracking</a></li>
+                <li><a href="./recommendation.html">Recommendation</a></li>
+            </ul>
+        </nav>
+        <div id="mobile-menu-wrap"></div>
+        <div class="canvas-social">
+            <a href="#"><i class="fa fa-facebook"></i></a>
+            <a href="#"><i class="fa fa-twitter"></i></a>
+            <a href="#"><i class="fa fa-youtube-play"></i></a>
+            <a href="#"><i class="fa fa-instagram"></i></a>
+        </div>
+    </div>
+    <!-- Offcanvas Menu Section End -->
+
+    <!-- Header Section Begin -->
+    <header class="header-section">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="logo">
+                        <a href="./index.html">
+                            <img src="img/logo.png" alt="GymLife">
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <nav class="nav-menu">
+                        <ul>
+                            <li class="active"><a href="./index.html">Home</a></li>
+                            <li><a href="./about.html">About Us</a></li>
+                            <li><a href="./services.html">Workout Service</a></li>
+                            <li><a href="./blog.html">Nutrition Service</a></li>
+                            <li><a href="./contact.html">User Service</a></li>
+                            <li><a href="./dashboard.html">Dashboard</a></li>
+                            <li><a href="./progress.html">Progress</a></li>
+                            <li><a href="./recommendation.html">Recommendation</a></li>
+                        </ul>
+                    </nav>
+                </div>
+                <div class="col-lg-3">
+                    <div class="top-option">
+                        <div class="to-search search-switch">
+                            <i class="fa fa-search"></i>
+                        </div>
+
+                        <!-- 👤 User Menu - Đã thêm vào đây -->
+                        <div id="user-menu" class="user-menu"></div>
+
+                        <div class="to-social">
+                            <a href="#"><i class="fa fa-facebook"></i></a>
+                            <a href="#"><i class="fa fa-twitter"></i></a>
+                            <a href="#"><i class="fa fa-youtube-play"></i></a>
+                            <a href="#"><i class="fa fa-instagram"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="canvas-open">
+                <i class="fa fa-bars"></i>
+            </div>
+        </div>
+    </header>
+    <!-- Header End -->
+
+    <!-- Hero Section Begin -->
+    <section class="hero-section">
+        <div class="hs-slider owl-carousel">
+            <div class="hs-item set-bg" data-setbg="img/hero/hero-1.jpg">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-6 offset-lg-6">
+                            <div class="hi-text">
+                                <span>Shape your body</span>
+                                <h1>Be <strong>strong</strong> traning hard</h1>
+                                <a href="#" class="primary-btn">Get info</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="hs-item set-bg" data-setbg="img/hero/hero-2.jpg">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-6 offset-lg-6">
+                            <div class="hi-text">
+                                <span>Shape your body</span>
+                                <h1>Be <strong>strong</strong> traning hard</h1>
+                                <a href="#" class="primary-btn">Get info</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Hero Section End -->
+
+    <!-- Dashboard Section Begin -->
+    <section class="dashboard-section spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="section-title">
+                        <span>Dashboard</span>
+                        <h2>TỔNG QUAN CÁ NHÂN</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <!-- Calories Today -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="dashboard-card calories-card">
+                        <h3>Calories Hôm Nay</h3>
+                        <div class="info-item">
+                            <span class="info-label">Nạp vào:</span>
+                            <span class="info-value">1,850 kcal</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Tiêu hao:</span>
+                            <span class="info-value">2,350 kcal</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Cân bằng:</span>
+                            <span class="info-value">-500 kcal</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Progress Chart -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="dashboard-card">
+                        <h3>Tiến Trình</h3>
+                        <div class="progress-chart">
+                            <canvas id="progressChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <!-- AI Coach Chat -->
+                <div class="col-lg-4 col-md-12">
+                    <div class="dashboard-card ai-chat-box">
+                        <h4>AI Coach</h4>
+                        <div class="chat-messages">
+                            <div class="message ai-message">Xin chào! Tôi có thể giúp gì cho bạn hôm nay?</div>
+                            <div class="message user-message">Tôi muốn tập cơ ngực</div>
+                            <div class="message ai-message">Tuyệt vời! Tôi đề xuất bài bench press và push-up</div>
+                        </div>
+                        <div class="chat-input">
+                            <input type="text" placeholder="Nhập câu hỏi...">
+                            <button>Gửi</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Dashboard Section End -->
+
+    <!-- Personal Info Section Begin -->
+    <section class="choseus-section spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="section-title">
+                        <span>Thông tin cá nhân</span>
+                        <h2>HỒ SƠ CỦA BẠN</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="personal-info">
+                        <div class="info-item">
+                            <span class="info-label">Tên:</span>
+                            <span class="info-value">Nguyễn Văn A</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Tuổi:</span>
+                            <span class="info-value">28</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Cân nặng:</span>
+                            <span class="info-value">72 kg</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Chiều cao:</span>
+                            <span class="info-value">175 cm</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">BMI:</span>
+                            <span class="info-value">23.5 (Bình thường)</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">BMR:</span>
+                            <span class="info-value">1,680 kcal/ngày</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Mục tiêu:</span>
+                            <span class="info-value">Giảm 5kg trong 3 tháng</span>
+                        </div>
+                        <button class="update-btn">Cập nhật thông tin</button>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="cs-item">
+                        <span class="flaticon-034-stationary-bike"></span>
+                        <h4>Chỉ số BMI</h4>
+                        <p>Chỉ số khối cơ thể (BMI) của bạn đang ở mức tốt. Duy trì chế độ tập luyện và dinh dưỡng hợp lý.</p>
+                    </div>
+                    <div class="cs-item">
+                        <span class="flaticon-014-heart-beat"></span>
+                        <h4>Mục tiêu</h4>
+                        <p>Bạn đang tiến rất tốt đến mục tiêu giảm 5kg. Hãy kiên trì và tiếp tục cố gắng!</p>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Personal Info Section End -->
+
+    <!-- Exercise Section Begin -->
+    <section class="classes-section spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="section-title">
+                        <span>Bài tập</span>
+                        <h2>GỢI Ý BÀI TẬP HÔM NAY</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4 col-md-6">
+                    <div class="exercise-card">
+                        <div class="exercise-img">
+                            <img src="img/classes/class-1.jpg" alt="Bench Press">
+                        </div>
+                        <div class="exercise-info">
+                            <div class="exercise-muscle">Ngực, Tay</div>
+                            <h5>Bench Press</h5>
+                            <div class="exercise-calories">~200 calories/30 phút</div>
+                            <button class="add-to-workout">Thêm vào buổi tập</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="exercise-card">
+                        <div class="exercise-img">
+                            <img src="img/classes/class-2.jpg" alt="Squat">
+                        </div>
+                        <div class="exercise-info">
+                            <div class="exercise-muscle">Chân, Mông</div>
+                            <h5>Squat</h5>
+                            <div class="exercise-calories">~180 calories/30 phút</div>
+                            <button class="add-to-workout">Thêm vào buổi tập</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="exercise-card">
+                        <div class="exercise-img">
+                            <img src="img/classes/class-3.jpg" alt="Deadlift">
+                        </div>
+                        <div class="exercise-info">
+                            <div class="exercise-muscle">Lưng, Chân</div>
+                            <h5>Deadlift</h5>
+                            <div class="exercise-calories">~220 calories/30 phút</div>
+                            <button class="add-to-workout">Thêm vào buổi tập</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Exercise Section End -->
+
+    <!-- Nutrition Section Begin -->
+    <section class="pricing-section spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="section-title">
+                        <span>Dinh dưỡng</span>
+                        <h2>THEO DÕI DINH DƯỠNG</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="nutrition-search">
+                        <input type="text" placeholder="Tìm kiếm thực phẩm...">
+                    </div>
+                    <div class="dashboard-card">
+                        <h3>Bảng dinh dưỡng</h3>
+                        <div class="info-item">
+                            <span class="info-label">Calories:</span>
+                            <span class="info-value">1,850/2,200 kcal</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Protein:</span>
+                            <span class="info-value">120/150g</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Carbs:</span>
+                            <span class="info-value">200/250g</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Fat:</span>
+                            <span class="info-value">60/70g</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="meal-today">
+                        <h4>Bữa ăn hôm nay</h4>
+                        <div class="meal-item">
+                            <span>Sáng</span>
+                            <span>650 kcal</span>
+                        </div>
+                        <div class="meal-item">
+                            <span>Trưa</span>
+                            <span>750 kcal</span>
+                        </div>
+                        <div class="meal-item">
+                            <span>Tối</span>
+                            <span>450 kcal</span>
+                        </div>
+                        <div class="meal-item">
+                            <span>Bữa phụ</span>
+                            <span>200 kcal</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Nutrition Section End -->
+
+    <!-- Footer Section Begin -->
+    <section class="footer-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="fs-about">
+                        <div class="fa-logo">
+                            <a href="#"><img src="img/logo.png" alt="GymLife"></a>
+                        </div>
+                        <p>GymLife - Nền tảng toàn diện cho sức khỏe và thể hình của bạn. Theo dõi tiến trình, nhận gợi ý tập luyện và dinh dưỡng phù hợp.</p>
+                        <div class="fa-social">
+                            <a href="#"><i class="fa fa-facebook"></i></a>
+                            <a href="#"><i class="fa fa-twitter"></i></a>
+                            <a href="#"><i class="fa fa-youtube-play"></i></a>
+                            <a href="#"><i class="fa fa-instagram"></i></a>
+                            <a href="#"><i class="fa fa-envelope-o"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-3 col-sm-6">
+                    <div class="fs-widget">
+                        <h4>Liên kết</h4>
+                        <ul>
+                            <li><a href="./about.html">Về chúng tôi</a></li>
+                            <li><a href="./blog.html">Dinh dưỡng</a></li>
+                            <li><a href="./services.html">Bài tập</a></li>
+                            <li><a href="./contact.html">Liên hệ</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-3 col-sm-6">
+                    <div class="fs-widget">
+                        <h4>Hỗ trợ</h4>
+                        <ul>
+                            <li><a href="./login.html">Đăng nhập</a></li>
+                            <li><a href="./register.html">Đăng ký</a></li>
+                            <li><a href="./dashboard.html">Dashboard</a></li>
+                            <li><a href="./contact.html">Liên hệ</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="fs-widget">
+                        <h4>Mẹo & Hướng dẫn</h4>
+                        <div class="fw-recent">
+                            <h6><a href="#">Tập luyện thể chất giúp ngăn ngừa trầm cảm, lo âu</a></h6>
+                            <ul>
+                                <li>3 phút đọc</li>
+                                <li>20 Bình luận</li>
+                            </ul>
+                        </div>
+                        <div class="fw-recent">
+                            <h6><a href="#">Fitness: Bài tập tốt nhất để giảm mỡ bụng</a></h6>
+                            <ul>
+                                <li>3 phút đọc</li>
+                                <li>15 Bình luận</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <div class="copyright-text">
+                        <p>Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | GymLife</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Footer Section End -->
+
+    <!-- Search model Begin -->
+    <div class="search-model">
+        <div class="h-100 d-flex align-items-center justify-content-center">
+            <div class="search-close-switch">+</div>
+            <form class="search-model-form">
+                <input type="text" id="search-input" placeholder="Search here.....">
+            </form>
+        </div>
+    </div>
+    <!-- Search model end -->
+
+    <!-- Js Plugins -->
+    <script src="js/jquery-3.3.1.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/jquery.magnific-popup.min.js"></script>
+    <script src="js/masonry.pkgd.min.js"></script>
+    <script src="js/jquery.barfiller.js"></script>
+    <script src="js/jquery.slicknav.js"></script>
+    <script src="js/owl.carousel.min.js"></script>
+    <script src="js/main.js"></script>
+
+    <script>
+        // Biểu đồ tiến trình
+        document.addEventListener('DOMContentLoaded', function() {
+            const ctx = document.getElementById('progressChart').getContext('2d');
+            const progressChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN'],
+                    datasets: [{
+                        label: 'Cân nặng (kg)',
+                        data: [73, 72.5, 72.3, 72.1, 72.0, 71.8, 71.7],
+                        borderColor: '#FF6600',
+                        tension: 0.1,
+                        fill: false
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                            min: 70
+                        }
+                    }
+                }
+            });
+
+            // Xử lý nút thêm vào buổi tập
+            document.querySelectorAll('.add-to-workout').forEach(button => {
+                button.addEventListener('click', function() {
+                    const exercise = this.closest('.exercise-card').querySelector('h5').textContent;
+                    alert(`Đã thêm ${exercise} vào buổi tập của bạn!`);
+                });
+            });
+
+            // Xử lý chat AI
+            document.querySelector('.chat-input button').addEventListener('click', function() {
+                const input = document.querySelector('.chat-input input');
+                const message = input.value.trim();
+                if (message) {
+                    const chatMessages = document.querySelector('.chat-messages');
+                    const userMessage = document.createElement('div');
+                    userMessage.className = 'message user-message';
+                    userMessage.textContent = message;
+                    chatMessages.appendChild(userMessage);
+
+                    // Giả lập phản hồi AI
+                    setTimeout(() => {
+                        const aiMessage = document.createElement('div');
+                        aiMessage.className = 'message ai-message';
+                        aiMessage.textContent = 'Cảm ơn câu hỏi của bạn. Tôi sẽ đề xuất bài tập phù hợp.';
+                        chatMessages.appendChild(aiMessage);
+                        chatMessages.scrollTop = chatMessages.scrollHeight;
+                    }, 1000);
+
+                    input.value = '';
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
+                }
+            });
+
+            // Xử lý User Menu
+            const userMenu = document.getElementById("user-menu");
+            const token = localStorage.getItem("access_token");
+
+            if (token) {
+                // Giả lập lấy thông tin người dùng từ API
+                // Trong thực tế, bạn sẽ gọi API để lấy thông tin người dùng
+                const userData = {
+                    name: "Nguyễn Văn A",
+                    email: "nguyenvana@example.com"
+                };
+                
+                userMenu.innerHTML = `
+                    <div class="dropdown">
+                        <button class="btn btn-sm btn-outline-dark dropdown-toggle" type="button" data-toggle="dropdown">
+                            👤 ${userData.name}
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <a class="dropdown-item" href="/profile.html">Hồ sơ</a>
+                            <a class="dropdown-item" href="#" id="logout-btn">Đăng xuất</a>
+                        </div>
+                    </div>
+                `;
+                
+                // Xử lý sự kiện đăng xuất
+                document.getElementById("logout-btn").addEventListener("click", async function(e) {
+                    e.preventDefault();
+                    
+                    // Giả lập gọi API logout
+                    console.log("Gọi API logout...");
+                    
+                    // Xóa token khỏi localStorage
+                    localStorage.removeItem("access_token");
+                    
+                    // Thông báo và chuyển hướng
+                    alert("Đã đăng xuất!");
+                    window.location.href = "/login.html";
+                });
+            } else {
+                userMenu.innerHTML = `
+                    <a href="/login.html" class="btn btn-sm btn-outline-primary mr-2">Đăng nhập</a>
+                    <a href="/register.html" class="btn btn-sm btn-primary">Đăng ký</a>
+                `;
+            }
+        });
+    </script>
+    
+</body>
+</html>

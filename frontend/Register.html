@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GymLife - Đăng ký</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #FF6600;
+      --primary-hover: #FF8533;
+      --dark-bg: #121212;
+      --card-bg: #1E1E1E;
+      --input-bg: #2A2A2A;
+      --text: #FFFFFF;
+      --text-secondary: #AAAAAA;
+      --navbar-height: 70px;
+    }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: var(--dark-bg);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .navbar {
+      background: var(--card-bg);
+      padding: 0 30px;
+      height: var(--navbar-height);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    
+    .navbar .logo {
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--primary);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+    
+    .nav-links {
+      display: flex;
+      gap: 25px;
+    }
+    
+    .nav-links a {
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      position: relative;
+      padding: 5px 0;
+    }
+    
+    .nav-links a:hover {
+      color: var(--primary);
+    }
+    
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--primary);
+      transition: width 0.3s ease;
+    }
+    
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+    
+    .nav-links a.active {
+      color: var(--primary);
+    }
+    
+    .nav-links a.active::after {
+      width: 100%;
+    }
+    
+    .main-content {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 30px 20px;
+    }
+    
+    .form-container {
+      width: 100%;
+      max-width: 500px;
+      animation: fadeIn 0.5s ease;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .logo-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    
+    .logo-text {
+      font-size: 36px;
+      font-weight: 800;
+      color: var(--primary);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 5px;
+    }
+    
+    .logo-subtitle {
+      color: var(--text-secondary);
+      font-size: 16px;
+    }
+    
+    .form-card {
+      background: var(--card-bg);
+      border-radius: 16px;
+      padding: 35px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+    }
+    
+    .form-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    
+    .form-header h2 {
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    
+    .form-header p {
+      color: var(--text-secondary);
+      font-size: 15px;
+    }
+    
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+      position: relative;
+    }
+    
+    .full-width {
+      grid-column: 1 / span 2;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+    
+    .input-with-icon {
+      position: relative;
+    }
+    
+    .input-icon {
+      position: absolute;
+      left: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-secondary);
+    }
+    
+    input, select {
+      width: 100%;
+      padding: 14px 16px 14px 45px;
+      border: none;
+      border-radius: 10px;
+      background: var(--input-bg);
+      color: var(--text);
+      font-size: 15px;
+      transition: all 0.3s ease;
+    }
+    
+    input:focus, select:focus {
+      outline: none;
+      box-shadow: 0 0 0 2px var(--primary);
+    }
+    
+    input:hover, select:hover {
+      background: #333333;
+    }
+    
+    .password-toggle {
+      position: absolute;
+      right: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-secondary);
+      cursor: pointer;
+    }
+    
+    .btn {
+      width: 100%;
+      padding: 16px;
+      background: var(--primary);
+      color: white;
+      font-weight: 600;
+      font-size: 16px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 10px;
+    }
+    
+    .btn i {
+      margin-right: 8px;
+    }
+    
+    .btn:hover {
+      background: var(--primary-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(255, 102, 0, 0.3);
+    }
+    
+    .btn:active {
+      transform: translateY(0);
+    }
+    
+    .message {
+      text-align: center;
+      margin-top: 20px;
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 14px;
+      display: none;
+    }
+    
+    .success {
+      background: rgba(76, 175, 80, 0.2);
+      color: #4CAF50;
+      display: block;
+    }
+    
+    .error {
+      background: rgba(244, 67, 54, 0.2);
+      color: #F44336;
+      display: block;
+    }
+    
+    .form-footer {
+      text-align: center;
+      margin-top: 25px;
+      color: var(--text-secondary);
+      font-size: 14px;
+    }
+    
+    .form-footer a {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+    
+    .form-footer a:hover {
+      text-decoration: underline;
+    }
+    
+    .progress-bar {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 30px;
+      position: relative;
+    }
+    
+    .progress-bar::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: #333;
+      transform: translateY(-50%);
+      z-index: 1;
+    }
+    
+    .progress-step {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: #333;
+      color: var(--text-secondary);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 14px;
+      font-weight: bold;
+      position: relative;
+      z-index: 2;
+    }
+    
+    .progress-step.active {
+      background: var(--primary);
+      color: white;
+    }
+    
+    .progress-step i {
+      font-size: 12px;
+    }
+    
+    .step-title {
+      position: absolute;
+      top: 35px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 12px;
+      color: var(--text-secondary);
+      white-space: nowrap;
+    }
+    
+    @media (max-width: 768px) {
+      .navbar {
+        padding: 0 20px;
+        flex-direction: column;
+        height: auto;
+        padding: 15px;
+      }
+      
+      .nav-links {
+        margin-top: 15px;
+        gap: 15px;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .full-width {
+        grid-column: 1;
+      }
+      
+      .form-card {
+        padding: 25px;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .logo-text {
+        font-size: 30px;
+      }
+      
+      .form-card {
+        padding: 20px;
+      }
+      
+      .progress-step {
+        width: 25px;
+        height: 25px;
+        font-size: 12px;
+      }
+      
+      .step-title {
+        font-size: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Thanh menu -->
+  <div class="navbar">
+    <div class="logo">GymLife</div>
+    <div class="nav-links">
+      <a href="index.html">Trang chủ</a>
+      <a href="login.html">Đăng nhập</a>
+      <a href="register.html" class="active">Đăng ký</a>
+      <a href="profile.html">Hồ sơ</a>
+    </div>
+  </div>
+
+  <!-- Nội dung chính -->
+  <div class="main-content">
+    <div class="form-container">
+      <div class="logo-header">
+        <div class="logo-text">GymLife</div>
+        <div class="logo-subtitle">Bắt đầu hành trình thể hình của bạn</div>
+      </div>
+      
+      <div class="form-card">
+        <div class="form-header">
+          <h2>Tạo tài khoản mới</h2>
+          <p>Điền thông tin để bắt đầu hành trình thể hình của bạn</p>
+        </div>
+        
+        <div class="progress-bar">
+          <div class="progress-step active">1</div>
+          <div class="progress-step">2</div>
+          <div class="progress-step"><i class="fas fa-check"></i></div>
+        </div>
+        
+        <div class="form-grid">
+          <div class="form-group full-width">
+            <label for="email">Email</label>
+            <div class="input-with-icon">
+              <span class="input-icon"><i class="fas fa-envelope"></i></span>
+              <input type="email" id="email" placeholder="Email của bạn">
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="password">Mật khẩu</label>
+            <div class="input-with-icon">
+              <span class="input-icon"><i class="fas fa-lock"></i></span>
+              <input type="password" id="password" placeholder="Mật khẩu">
+              <span class="password-toggle" id="passwordToggle">
+                <i class="fas fa-eye"></i>
+              </span>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="confirmPassword">Xác nhận mật khẩu</label>
+            <div class="input-with-icon">
+              <span class="input-icon"><i class="fas fa-lock"></i></span>
+              <input type="password" id="confirmPassword" placeholder="Xác nhận mật khẩu">
+            </div>
+          </div>
+          
+          <div class="form-group full-width">
+            <label for="name">Họ và tên</label>
+            <div class="input-with-icon">
+              <span class="input-icon"><i class="fas fa-user"></i></span>
+              <input type="text" id="name" placeholder="Họ tên đầy đủ của bạn">
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="gender">Giới tính</label>
+            <div class="input-with-icon">
+              <span class="input-icon"><i class="fas fa-venus-mars"></i></span>
+              <select id="gender">
+                <option value="">Chọn giới tính</option>
+                <option value="male">Nam</option>
+                <option value="female">Nữ</option>
+              </select>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="dob">Ngày sinh</label>
+            <div class="input-with-icon">
+              <span class="input-icon"><i class="fas fa-calendar-day"></i></span>
+              <input type="date" id="dob">
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="height">Chiều cao (cm)</label>
+            <div class="input-with-icon">
+              <span class="input-icon"><i class="fas fa-arrows-alt-v"></i></span>
+              <input type="number" id="height" placeholder="VD: 175" min="100" max="250">
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="weight">Cân nặng (kg)</label>
+            <div class="input-with-icon">
+              <span class="input-icon"><i class="fas fa-weight"></i></span>
+              <input type="number" id="weight" placeholder="VD: 68" min="30" max="200">
+            </div>
+          </div>
+          
+          <div class="form-group full-width">
+            <label for="goal">Mục tiêu tập luyện</label>
+            <div class="input-with-icon">
+              <span class="input-icon"><i class="fas fa-bullseye"></i></span>
+              <input type="text" id="goal" placeholder="VD: Giảm 5kg trong 3 tháng, tăng cơ bắp...">
+            </div>
+          </div>
+        </div>
+        
+        <button class="btn" onclick="register()">
+          <i class="fas fa-user-plus"></i> Đăng ký tài khoản
+        </button>
+        
+        <div class="form-footer">
+          Đã có tài khoản? <a href="login.html">Đăng nhập ngay</a>
+        </div>
+        
+        <div id="msg" class="message"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Hiển thị/ẩn mật khẩu
+    document.getElementById('passwordToggle').addEventListener('click', function() {
+      const passwordInput = document.getElementById('password');
+      const icon = this.querySelector('i');
+      
+      if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        icon.classList.remove('fa-eye');
+        icon.classList.add('fa-eye-slash');
+      } else {
+        passwordInput.type = 'password';
+        icon.classList.remove('fa-eye-slash');
+        icon.classList.add('fa-eye');
+      }
+    });
+    
+    // Cho phép đăng ký bằng phím Enter
+    document.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        register();
+      }
+    });
+
+    async function register() {
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      const confirmPassword = document.getElementById('confirmPassword').value;
+      const name = document.getElementById('name').value;
+      const gender = document.getElementById('gender').value;
+      const dob = document.getElementById('dob').value;
+      const height = document.getElementById('height').value;
+      const weight = document.getElementById('weight').value;
+      const goal = document.getElementById('goal').value;
+      
+      // Kiểm tra dữ liệu đầu vào
+      if (!email || !password || !confirmPassword || !name || !gender || !dob || !height || !weight) {
+        showMessage('Vui lòng điền đầy đủ thông tin', 'error');
+        return;
+      }
+      
+      // Kiểm tra định dạng email
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        showMessage('Email không hợp lệ', 'error');
+        return;
+      }
+      
+      // Kiểm tra mật khẩu
+      if (password.length < 6) {
+        showMessage('Mật khẩu phải có ít nhất 6 ký tự', 'error');
+        return;
+      }
+      
+      // Kiểm tra xác nhận mật khẩu
+      if (password !== confirmPassword) {
+        showMessage('Mật khẩu xác nhận không khớp', 'error');
+        return;
+      }
+      
+      // Kiểm tra chiều cao
+      if (height < 100 || height > 250) {
+        showMessage('Chiều cao không hợp lệ (100-250cm)', 'error');
+        return;
+      }
+      
+      // Kiểm tra cân nặng
+      if (weight < 30 || weight > 200) {
+        showMessage('Cân nặng không hợp lệ (30-200kg)', 'error');
+        return;
+      }
+
+      const data = {
+        email,
+        password,
+        name,
+        gender,
+        dob,
+        height,
+        weight,
+        goal
+      };
+
+      try {
+        const res = await fetch("http://localhost:5000/api/register", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data)
+        });
+
+        const msg = await res.json();
+        
+        if (res.ok) {
+          showMessage('Đăng ký thành công! Đang chuyển hướng...', 'success');
+          setTimeout(() => { window.location.href = "login.html"; }, 1500);
+        } else {
+          showMessage(msg.error || 'Đăng ký thất bại', 'error');
+        }
+      } catch (error) {
+        showMessage('Lỗi kết nối đến server', 'error');
+      }
+    }
+    
+    // Hiển thị thông báo
+    function showMessage(text, type) {
+      const msgElement = document.getElementById('msg');
+      msgElement.textContent = text;
+      msgElement.className = 'message ' + type;
+      
+      // Ẩn thông báo sau 5 giây
+      setTimeout(() => {
+        msgElement.style.opacity = '0';
+        setTimeout(() => {
+          msgElement.className = 'message';
+          msgElement.style.opacity = '1';
+        }, 1000);
+      }, 5000);
+    }
+  </script>
+</body>
+</html>

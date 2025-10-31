@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GymLife | Trang Người Dùng</title>
+
+  <!-- ⚙️ Giữ nguyên style & font như index -->
+  <link rel="stylesheet" href="css/bootstrap.min.css" />
+  <link rel="stylesheet" href="css/style.css" /> <!-- nếu index có file style riêng -->
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Oswald', sans-serif;
+      background-color: #0e0e0e;
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    header {
+      background-color: #111;
+      padding: 15px 30px;
+      border-bottom: 2px solid #ff6600;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    header h1 {
+      color: #ff6600;
+      margin: 0;
+      font-weight: 600;
+    }
+    nav a {
+      color: white;
+      margin: 0 10px;
+      text-decoration: none;
+    }
+    nav a:hover {
+      color: #ff6600;
+    }
+    .user-section {
+      flex-grow: 1;
+      max-width: 800px;
+      margin: 60px auto;
+      background: #1b1b1b;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(255, 102, 0, 0.3);
+    }
+    .user-section h2 {
+      text-align: center;
+      color: #ff6600;
+      margin-bottom: 20px;
+    }
+    .info-item {
+      border-bottom: 1px solid #333;
+      padding: 10px 0;
+    }
+    .info-item b {
+      color: #ff8533;
+    }
+    footer {
+      background-color: #111;
+      padding: 10px;
+      text-align: center;
+      color: #aaa;
+      font-size: 0.9em;
+    }
+    .btn-orange {
+      background-color: #ff6600;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 5px;
+      color: white;
+      cursor: pointer;
+      margin-top: 15px;
+    }
+    .btn-orange:hover {
+      background-color: #ff8533;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- 🔹 Header giữ nguyên style -->
+  <header>
+    <h1>GymLife AI</h1>
+    <nav>
+      <a href="index.html">🏠 Trang chủ</a>
+      <a href="user.html" class="active">👤 Tài khoản</a>
+      <a href="#" id="btn-logout">🚪 Đăng xuất</a>
+    </nav>
+  </header>
+
+  <!-- 🔹 Nội dung trang user -->
+  <div class="user-section">
+    <h2>Hồ sơ người dùng</h2>
+    <div id="user-info">
+      <p>⏳ Đang tải thông tin...</p>
+    </div>
+
+    <div class="text-center mt-3">
+      <button class="btn-orange" id="btn-edit">✏️ Cập nhật thông tin</button>
+      <button class="btn-orange" id="btn-chat">🤖 Chat với AI Coach</button>
+    </div>
+  </div>
+
+  <footer>
+    <p>© 2025 GymLife AI – Dinh dưỡng & Thể hình thông minh</p>
+  </footer>
+
+  <script>
+    const token = localStorage.getItem("access_token");
+    if (!token) {
+      window.location.href = "login.html";
+    }
+
+    // 🔹 Lấy thông tin user từ API
+    fetch("http://localhost:5000/api/profile", {
+      headers: { "Authorization": token }
+    })
+      .then(res => res.json())
+      .then(data => {
+        const userDiv = document.getElementById("user-info");
+        if (data.error) {
+          userDiv.innerHTML = `<p>⚠️ ${data.error}</p>`;
+        } else {
+          userDiv.innerHTML = `
+            <div class="info-item"><b>Email:</b> ${data.email}</div>
+            <div class="info-item"><b>Họ tên:</b> ${data.name || "(chưa cập nhật)"}</div>
+            <div class="info-item"><b>Giới tính:</b> ${data.gender || "(chưa cập nhật)"}</div>
+            <div class="info-item"><b>Chiều cao:</b> ${data.height || "(chưa cập nhật)"} cm</div>
+            <div class="info-item"><b>Cân nặng:</b> ${data.weight || "(chưa cập nhật)"} kg</div>
+            <div class="info-item"><b>Mục tiêu:</b> ${data.goal || "(chưa cập nhật)"}</div>
+            <div class="info-item"><b>Ngày tạo:</b> ${data.created_at}</div>
+          `;
+        }
+      })
+      .catch(err => {
+        document.getElementById("user-info").innerHTML = `<p>❌ Lỗi tải dữ liệu.</p>`;
+        console.error(err);
+      });
+
+    // 🔹 Logout
+    document.getElementById("btn-logout").onclick = () => {
+      localStorage.clear();
+      window.location.href = "login.html";
+    };
+
+    // 🔹 Chat
+    document.getElementById("btn-chat").onclick = () => {
+      window.location.href = "index.html";
+    };
+
+    // 🔹 Cập nhật profile
+    document.getElementById("btn-edit").onclick = () => {
+      window.location.href = "profile.html"; // (trang chỉnh sửa thông tin)
+    };
+  </script>
+</body>
+</html>

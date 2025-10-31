@@ -363,10 +363,11 @@ def format_recommendation_response(intent_hint: str, data: dict) -> str:
 @jwt_required()
 def chat():
     try:
-        data = request.get_json()
+        data = request.get_json(force=True)
         user_message = data.get("message", "")
         user_id = int(get_jwt_identity())
         auth_header = request.headers.get("Authorization")
+
 
         conn = get_db_connection()
         cursor = conn.cursor()

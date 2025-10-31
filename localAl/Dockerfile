@@ -17,4 +17,4 @@ COPY . .
 EXPOSE 5000
 
 # Chạy ứng dụng Flask
-CMD ["python", "app.py"]
+CMD ["python", "app.py"]s

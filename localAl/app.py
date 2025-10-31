@@ -4,7 +4,7 @@ import logging
 logging.basicConfig(level=logging.DEBUG)
 from flask import Flask, render_template, send_from_directory, jsonify
 from flask_jwt_extended import JWTManager
-
+from flask_cors import CORS
 # Import các blueprint - GIỮ NGUYÊN TÊN FILE User_service.py
 from User_service import user_bp, blacklist   # ⚡ import cả blacklist
 from ChatService import chat_bp   # Giữ nguyên ChatService
@@ -17,6 +17,9 @@ app = Flask(__name__,
     static_folder='C:/Users/trant/OneDrive/Desktop/FinalProject/frontend',
     template_folder='C:/Users/trant/OneDrive/Desktop/FinalProject/frontend'
 )
+CORS(app, resources={r"/api/*": {"origins": "*"}})
+app.logger.info("CORS enabled for all /api/* routes")
+
 
 # 🔑 CẤU HÌNH JWT
 app.config['JWT_SECRET_KEY'] = 'your-secret-key-change-this-in-production'
@@ -40,11 +43,11 @@ app.register_blueprint(recommendation_bp, url_prefix='/api')
 # ✅ CÁC ROUTE CỦA ỨNG DỤNG CHÍNH
 @app.route('/')
 def serve_home():
-    return render_template('index.html')
-
-@app.route('/login.html')
-def serve_login():
     return render_template('Login.html')
+
+@app.route('/index.html')
+def serve_login():
+    return render_template('index.html')
 
 @app.route('/register.html')
 def serve_register():
@@ -72,6 +75,10 @@ def serve_static_resources(subpath):
         return send_from_directory(app.static_folder, subpath)
     else:
         return jsonify({"error": "Page not found", "path": subpath}), 404
+
+@app.route('/user.html')
+def serve_user():
+    return render_template('Users.html')
 
 # 🎯 CHẠY ỨNG DỤNG
 if __name__ == '__main__':

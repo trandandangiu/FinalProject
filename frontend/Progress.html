@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GymLife - Progress Tracking</title>
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/font-awesome.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    :root {
+      --primary: #FF6600;
+      --bg-dark: #0d0d0d;
+      --bg-card: #1a1a1a;
+    }
+    body { background: var(--bg-dark); color: white; }
+    h2 { color: var(--primary); }
+    .progress-card {
+      background: var(--bg-card);
+      border-radius: 12px;
+      padding: 15px;
+      margin-bottom: 15px;
+    }
+    .btn-primary { background: var(--primary); border: none; }
+    .btn-primary:hover { background: #ff8533; }
+    input, textarea {
+      background: var(--bg-card);
+      color: white;
+      border: 1px solid #333;
+    }
+    input:focus, textarea:focus { border-color: var(--primary); box-shadow: none; }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header-section">
+    <div class="container-fluid">
+      <div class="row align-items-center">
+        <div class="col-lg-3">
+          <div class="logo">
+            <a href="./index.html"><img src="img/logo.png" alt="GymLife"></a>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <nav class="nav-menu">
+            <ul>
+              <li><a href="./index.html">Home</a></li>
+              <li><a href="./services.html">Workout</a></li>
+              <li><a href="./blog.html">Nutrition</a></li>
+              <li class="active"><a href="./progress.html">Progress</a></li>
+              <li><a href="./contact.html">User</a></li>
+              <li><a href="./dashboard.html">Dashboard</a></li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Breadcrumb -->
+  <section class="breadcrumb-section set-bg" data-setbg="img/breadcrumb-bg.jpg">
+    <div class="container text-center">
+      <div class="breadcrumb-text">
+        <h2>Progress Tracking</h2>
+        <div class="bt-option">
+          <a href="./index.html">Trang chủ</a>
+          <span>Tiến trình luyện tập</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Progress Section -->
+  <section class="spad">
+    <div class="container">
+      <div class="text-center mb-5">
+        <h2>📈 Theo dõi tiến trình của bạn</h2>
+        <p>Ghi nhận cân nặng, lượng calo, và chỉ số BMI mỗi ngày.</p>
+      </div>
+
+      <!-- Form thêm tiến trình -->
+      <div class="progress-card mb-4">
+        <h5>Thêm tiến trình mới</h5>
+        <div class="row">
+          <div class="col-md-3 mb-2">
+            <input type="number" id="bodyFat" class="form-control" placeholder="% Mỡ cơ thể">
+          </div>
+          <div class="col-md-3 mb-2">
+            <input type="number" id="caloriesIn" class="form-control" placeholder="Calories nạp vào">
+          </div>
+          <div class="col-md-3 mb-2">
+            <input type="number" id="caloriesOut" class="form-control" placeholder="Calories tiêu thụ">
+          </div>
+          <div class="col-md-3 mb-2">
+            <button id="btnAdd" class="btn btn-primary w-100">Thêm tiến trình</button>
+          </div>
+          <div class="col-12 mt-2">
+            <textarea id="notes" class="form-control" placeholder="Ghi chú (tùy chọn)" rows="2"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- Lịch sử tiến trình -->
+      <h4 style="color:#FF6600;">Lịch sử tiến trình</h4>
+      <div id="progressList" class="mt-3">
+        <p class="text-secondary text-center">⏳ Đang tải dữ liệu...</p>
+      </div>
+    </div>
+  </section>
+
+  <footer class="text-center py-4" style="background:#111;">
+    <p class="mb-0">© 2025 GymLife | Built with 🧡</p>
+  </footer>
+
+  <script src="js/bootstrap.bundle.min.js"></script>
+  <script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const API_BASE = "http://localhost:5000/api";
+    const token = localStorage.getItem("access_token");
+    const headers = {
+      "Content-Type": "application/json",
+      "Authorization": token && token.startsWith("Bearer ") ? token : `Bearer ${token}`
+    };
+
+    // ====== Lấy danh sách tiến trình ======
+    async function loadProgress() {
+      const list = document.getElementById("progressList");
+      list.innerHTML = "<p class='text-secondary text-center'>⏳ Đang tải...</p>";
+
+      const res = await fetch(`${API_BASE}/progress`, { headers });
+      if (!res.ok) {
+        list.innerHTML = "<p class='text-danger text-center'>⚠️ Không tìm thấy dữ liệu</p>";
+        return;
+      }
+
+      const data = await res.json();
+      list.innerHTML = "";
+      data.progress.forEach(p => {
+        const card = document.createElement("div");
+        card.className = "progress-card";
+        card.innerHTML = `
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <h6>${new Date(p.date).toLocaleDateString('vi-VN')}</h6>
+              <p class="mb-1">Cân nặng: ${p.weight ?? "?"} kg | BMI: ${p.bmi?.toFixed(1) ?? "?"}</p>
+              <p class="mb-1">Calories in/out: ${p.calories_in ?? 0}/${p.calories_out ?? 0}</p>
+              <p class="mb-1">% Mỡ cơ thể: ${p.body_fat_pct ?? "?"}%</p>
+              <p class="mb-0 text-muted">${p.notes ?? ""}</p>
+            </div>
+            <div>
+              <button class="btn btn-sm btn-warning me-2" onclick="editProgress(${p.log_id})">✏️</button>
+              <button class="btn btn-sm btn-danger" onclick="deleteProgress(${p.log_id})">🗑️</button>
+            </div>
+          </div>
+        `;
+        list.appendChild(card);
+      });
+    }
+
+    // ====== Thêm tiến trình mới ======
+    document.getElementById("btnAdd").addEventListener("click", async () => {
+      const body_fat_pct = document.getElementById("bodyFat").value;
+      const calories_in = document.getElementById("caloriesIn").value;
+      const calories_out = document.getElementById("caloriesOut").value;
+      const notes = document.getElementById("notes").value;
+
+      const res = await fetch(`${API_BASE}/progress`, {
+        method: "POST",
+        headers,
+        body: JSON.stringify({ body_fat_pct, calories_in, calories_out, notes })
+      });
+
+      if (res.ok) {
+        alert("✅ Thêm tiến trình thành công!");
+        loadProgress();
+      } else {
+        alert("⚠️ Không thể thêm tiến trình!");
+      }
+    });
+
+    // ====== Xóa tiến trình ======
+    window.deleteProgress = async (id) => {
+      if (!confirm("Bạn có chắc muốn xóa tiến trình này?")) return;
+      const res = await fetch(`${API_BASE}/progress/${id}`, { method: "DELETE", headers });
+      if (res.ok) {
+        alert("🗑️ Đã xóa tiến trình!");
+        loadProgress();
+      }
+    };
+
+    // ====== Chỉnh sửa (sẽ mở form nhập lại) ======
+    window.editProgress = async (id) => {
+      const newNotes = prompt("Nhập ghi chú mới:");
+      if (newNotes === null) return;
+      await fetch(`${API_BASE}/progress/${id}`, {
+        method: "PUT",
+        headers,
+        body: JSON.stringify({ notes: newNotes })
+      });
+      loadProgress();
+    };
+
+    loadProgress();
+  });
+  </script>
+</body>
+</html>

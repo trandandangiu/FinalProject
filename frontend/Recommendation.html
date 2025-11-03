@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GymLife - Recommendation</title>
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/font-awesome.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    :root {
+      --primary: #FF6600;
+      --bg-dark: #0d0d0d;
+      --bg-card: #1a1a1a;
+    }
+    body { background: var(--bg-dark); color: white; }
+    h2, h4 { color: var(--primary); }
+    .rec-card {
+      background: var(--bg-card);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 0 8px rgba(255, 102, 0, 0.2);
+    }
+    .btn-primary { background: var(--primary); border: none; }
+    .btn-primary:hover { background: #ff8533; }
+    table { color: white; }
+    th { color: var(--primary); }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header-section">
+    <div class="container-fluid">
+      <div class="row align-items-center">
+        <div class="col-lg-3">
+          <div class="logo"><a href="./index.html"><img src="img/logo.png" alt="GymLife"></a></div>
+        </div>
+        <div class="col-lg-6">
+          <nav class="nav-menu">
+            <ul>
+              <li><a href="./index.html">Home</a></li>
+              <li><a href="./services.html">Workout</a></li>
+              <li><a href="./blog.html">Nutrition</a></li>
+              <li><a href="./progress.html">Progress</a></li>
+              <li class="active"><a href="./recommendation.html">Recommendation</a></li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Breadcrumb -->
+  <section class="breadcrumb-section set-bg" data-setbg="img/breadcrumb-bg.jpg">
+    <div class="container text-center">
+      <div class="breadcrumb-text">
+        <h2>Gợi ý cá nhân hóa</h2>
+        <div class="bt-option">
+          <a href="./index.html">Trang chủ</a>
+          <span>Recommendation</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="spad">
+    <div class="container">
+      <div class="text-center mb-4">
+        <h2>🧠 Gợi ý luyện tập & dinh dưỡng thông minh</h2>
+      </div>
+
+      <!-- Thông tin người dùng -->
+      <div id="userInfo" class="rec-card text-center">
+        <h4>Đang tải hồ sơ người dùng...</h4>
+      </div>
+
+      <!-- Gợi ý bài tập -->
+      <div id="workoutRecs" class="rec-card">
+        <h4>💪 Gợi ý bài tập</h4>
+        <div id="workoutList"><p>Đang tải dữ liệu...</p></div>
+      </div>
+
+      <!-- Gợi ý bữa ăn -->
+      <div id="mealRecs" class="rec-card">
+        <h4>🍱 Gợi ý bữa ăn</h4>
+        <div id="mealList"><p>Đang tải dữ liệu...</p></div>
+      </div>
+
+      <!-- Kế hoạch tuần -->
+      <div id="weeklyPlan" class="rec-card">
+        <h4>📅 Kế hoạch luyện tập & dinh dưỡng tuần</h4>
+        <div id="planTable"><p>Đang tạo kế hoạch...</p></div>
+      </div>
+
+      <!-- Mẹo nhanh -->
+      <div id="quickTip" class="rec-card">
+        <h4>⚡ Mẹo nhanh</h4>
+        <ul id="tipList"></ul>
+      </div>
+    </div>
+  </section>
+
+  <footer class="text-center py-4" style="background:#111;">
+    <p class="mb-0">© 2025 GymLife | Personalized Recommendation System</p>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+  document.addEventListener("DOMContentLoaded", async () => {
+    const BASE = "http://localhost:5000/api/recommendations";
+    const token = localStorage.getItem("access_token");
+    const headers = { "Authorization": token.startsWith("Bearer ") ? token : `Bearer ${token}` };
+
+    const api = async (url) => {
+      const res = await fetch(url, { headers });
+      if (!res.ok) throw new Error(`API Error ${res.status}`);
+      return res.json();
+    };
+
+    try {
+      // --- 1️⃣ Thông tin người dùng + cấp độ
+      const workout = await api(`${BASE}/workouts`);
+      document.getElementById("userInfo").innerHTML = `
+        <h4>Mục tiêu: <span style="color:#FF6600;">${workout.goal}</span></h4>
+        <p>Trình độ: <strong>${workout.user_level}</strong></p>
+        <p>Số buổi tập gần đây: ${workout.stats.session_count} | Tần suất hoạt động: ${(workout.stats.consistency_rate*100).toFixed(0)}%</p>
+      `;
+
+      // --- 2️⃣ Gợi ý bài tập
+      const wList = workout.recommended_workouts.map(w => `
+        <div class="mb-2 p-2 border-bottom">
+          <strong>${w.name}</strong> (${w.body_part}) - ${w.sets} sets x ${w.reps} reps
+        </div>
+      `).join("");
+      document.getElementById("workoutList").innerHTML = wList || "Không có gợi ý bài tập.";
+
+      // --- 3️⃣ Gợi ý bữa ăn
+      const meals = await api(`${BASE}/meals`);
+      const mList = meals.recommended_meals.map(f => `
+        <div class="mb-2 p-2 border-bottom">
+          🍴 <strong>${f.name}</strong> (${f.calories} kcal, P:${f.protein}g C:${f.carbs}g F:${f.fat}g)
+        </div>
+      `).join("");
+      document.getElementById("mealList").innerHTML = mList || "Không có gợi ý bữa ăn.";
+
+      // --- 4️⃣ Kế hoạch tuần
+      const plan = await api(`${BASE}/weekly-plan`);
+      let table = `<table class="table table-dark table-striped text-center">
+        <thead><tr><th>Ngày</th><th>Bài tập</th><th>Bữa ăn</th></tr></thead><tbody>`;
+      for (const [day, info] of Object.entries(plan.weekly_plan)) {
+        const w = info.workouts.map(x => x.name).join(", ") || "-";
+        const m = info.meals.map(x => x.food.name).join(", ") || "-";
+        table += `<tr><td>${day}</td><td>${w}</td><td>${m}</td></tr>`;
+      }
+      table += "</tbody></table>";
+      document.getElementById("planTable").innerHTML = table;
+
+      // --- 5️⃣ Mẹo nhanh
+      const tips = await api(`${BASE}/quick-tip`);
+      document.getElementById("tipList").innerHTML = tips.tips.map(t => `<li>${t}</li>`).join("");
+
+    } catch (e) {
+      console.error(e);
+      document.body.innerHTML = "<h4 class='text-center text-danger mt-5'>⚠️ Lỗi khi tải dữ liệu gợi ý. Hãy đảm bảo đã đăng nhập!</h4>";
+    }
+  });
+  </script>
+</body>
+</html>

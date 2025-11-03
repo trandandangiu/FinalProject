@@ -13,7 +13,12 @@ def get_foods():
         keyword = request.args.get("q")
         limit = request.args.get("limit", 50, type=int)
 
-        query = "SELECT * FROM foods WHERE 1=1"
+        # ✅ DISTINCT loại bỏ dòng SQL trùng, chỉ lấy các cột cần thiết
+        query = """
+            SELECT DISTINCT food_id, name, calories, protein, carbs, fat, goal, category
+            FROM foods
+            WHERE 1=1
+        """
         params = []
 
         if goal:
@@ -22,10 +27,11 @@ def get_foods():
         if keyword:
             query += " AND name LIKE %s"
             params.append(f"%{keyword}%")
-        
+
         query += " LIMIT %s"
         params.append(limit)
 
+        # Kết nối và lấy dữ liệu
         conn = get_db_connection()
         cursor = conn.cursor(dictionary=True)
         cursor.execute(query, tuple(params))
@@ -33,13 +39,22 @@ def get_foods():
         cursor.close()
         conn.close()
 
-        if not foods:
+        # ✅ Bổ sung lọc trùng trong Python: chỉ giữ 1 dòng cho mỗi (name + goal)
+        unique_foods = []
+        seen_keys = set()
+        for f in foods:
+            key = (f["name"].strip().lower(), f["goal"].strip().lower() if f["goal"] else "")
+            if key not in seen_keys:
+                seen_keys.add(key)
+                unique_foods.append(f)
+
+        if not unique_foods:
             return jsonify({"message": "No foods found matching criteria"}), 404
-        
-        return jsonify({"count": len(foods), "foods": foods}), 200
+
+        return jsonify({"count": len(unique_foods), "foods": unique_foods}), 200
+
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-
 
 # ===================== TÌM THỰC PHẨM (SEARCH) =====================
 @Foods_bp.route("/foods/search", methods=["GET"])

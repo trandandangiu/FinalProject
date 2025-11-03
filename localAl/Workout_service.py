@@ -6,22 +6,24 @@ workout_bp = Blueprint("workout", __name__)
 
 # ===================== LẤY DANH SÁCH BÀI TẬP =====================
 @workout_bp.route("/workouts", methods=["GET"])
-@jwt_required(optional=True)  # ✅ Cho phép cả user chưa login vẫn xem
+@jwt_required(optional=True)
 def get_exercises():
     """
     Lấy danh sách bài tập.
-    Filter: body_part, equipment, target.
+    Filter: body_part, equipment, target, level.
     """
     try:
         body_part = request.args.get("body_part")
         equipment = request.args.get("equipment")
         target = request.args.get("target")
+        level = request.args.get("level")
         limit = request.args.get("limit", 20, type=int)
 
         query = """
-            SELECT exercise_id, name, body_part, equipment, target, secondary_muscles, video_url
+            SELECT exercise_id, name, body_part, equipment, target, secondary_muscles,
+                   video_path, level
             FROM exercises
-            WHERE 1=1
+            WHERE is_active = 1
         """
         params = []
 
@@ -34,6 +36,9 @@ def get_exercises():
         if target:
             query += " AND target = %s"
             params.append(target)
+        if level:
+            query += " AND level = %s"
+            params.append(level)
 
         query += " LIMIT %s"
         params.append(limit)
@@ -45,6 +50,7 @@ def get_exercises():
 
         cursor.close()
         conn.close()
+
         return jsonify({"count": len(exercises), "exercises": exercises}), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500

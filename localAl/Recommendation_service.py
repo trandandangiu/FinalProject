@@ -29,12 +29,14 @@ def calculate_user_level(workout_history_count, consistency_rate):
         return "intermediate"
     else:
         return "advanced"
-
 def get_user_profile(user_id):
-    """Lấy thông tin profile người dùng"""
+    """
+    Lấy thông tin profile người dùng một cách an toàn.
+    Nếu chưa có profile, trả về giá trị mặc định.
+    """
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
-    
+
     cursor.execute("""
         SELECT p.goal, p.weight, p.height, p.gender, p.dob,
                TIMESTAMPDIFF(YEAR, p.dob, CURDATE()) as age
@@ -45,8 +47,27 @@ def get_user_profile(user_id):
     profile = cursor.fetchone()
     cursor.close()
     conn.close()
-    
+
+    # ✅ Nếu user chưa có profile, tạo giá trị mặc định
+    if not profile:
+        profile = {
+            "goal": "duy trì",       # mặc định mục tiêu
+            "weight": None,
+            "height": None,
+            "gender": "khác",
+            "dob": None,
+            "age": 0
+        }
+
+    # ✅ Đảm bảo không bị lỗi key missing
+    profile.setdefault("goal", "duy trì")
+    profile.setdefault("weight", None)
+    profile.setdefault("height", None)
+    profile.setdefault("gender", "khác")
+    profile.setdefault("age", 0)
+
     return profile
+
 
 def get_workout_history_stats(user_id):
     """Thống kê lịch sử tập luyện"""

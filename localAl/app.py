@@ -12,6 +12,7 @@ from Workout_service import workout_bp  # Giữ nguyên Workout_service
 from Foods_service import Foods_bp  # Giữ nguyên Foods_service
 from Progress_service import progress_bp  # Giữ nguyên Progress_service
 from Recommendation_service import recommendation_bp  # Giữ nguyên Recommendation_service
+from Plan_service import plan_bp  # 🆕 THÊM DÒNG NÀY
 # 🚀 KHỞI TẠO FLASK APP
 app = Flask(__name__,
     static_folder='C:/Users/trant/OneDrive/Desktop/FinalProject/frontend',
@@ -40,6 +41,7 @@ app.register_blueprint(workout_bp, url_prefix='/api')
 app.register_blueprint(Foods_bp, url_prefix='/api')
 app.register_blueprint(progress_bp, url_prefix='/api')
 app.register_blueprint(recommendation_bp, url_prefix='/api')
+app.register_blueprint(plan_bp, url_prefix="/api")
 # ✅ CÁC ROUTE CỦA ỨNG DỤNG CHÍNH
 @app.route('/')
 def serve_home():

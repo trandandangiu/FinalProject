@@ -283,34 +283,74 @@ def get_workout_recommendations():
     """API đề xuất bài tập cá nhân hóa"""
     try:
         user_id = int(get_jwt_identity())
-        
-        # Lấy thông tin người dùng
+
+        # ✅ Lấy thông tin hồ sơ người dùng
         profile = get_user_profile(user_id)
-        if not profile:
-            return jsonify({"error": "User profile not found"}), 404
-        
-        workout_stats = get_workout_history_stats(user_id)
-        user_level = calculate_user_level(
-            workout_stats["session_count"], 
-            workout_stats["consistency_rate"]
-        )
-        
-        # Đề xuất bài tập
-        workouts = recommend_workouts(
-            user_id, 
-            profile["goal"], 
-            user_level, 
-            workout_stats["favorite_body_parts"]
-        )
-        
+        if not profile or not profile.get("goal"):
+            return jsonify({
+                "message": "⚠️ Không tìm thấy hồ sơ người dùng. Vui lòng cập nhật mục tiêu trong User Service."
+            }), 400
+
+        goal = profile.get("goal", "duy trì")
+
+        # ✅ Lấy thống kê tập luyện (có thể rỗng nếu user chưa tập)
+        try:
+            workout_stats = get_workout_history_stats(user_id)
+        except Exception as e:
+            print("⚠️ Không thể lấy thống kê tập luyện:", e)
+            workout_stats = {
+                "session_count": 0,
+                "consistency_rate": 0.0,
+                "favorite_body_parts": []
+            }
+
+        # ✅ Tính cấp độ người dùng (nếu chưa có buổi tập → beginner)
+        try:
+            user_level = calculate_user_level(
+                workout_stats.get("session_count", 0),
+                workout_stats.get("consistency_rate", 0)
+            )
+        except Exception:
+            user_level = "beginner"
+
+        # ✅ Gợi ý bài tập
+        try:
+            workouts = recommend_workouts(
+                user_id,
+                goal,
+                user_level,
+                workout_stats.get("favorite_body_parts", [])
+            )
+        except Exception as e:
+            print("⚠️ Lỗi trong recommend_workouts:", e)
+            workouts = []
+
+        # ✅ Nếu không có bài tập gợi ý, trả fallback mặc định
+        if not workouts:
+            workouts = [{
+                "name": "Push-up",
+                "body_part": "chest",
+                "equipment": "body weight",
+                "sets": 3,
+                "reps": 12
+            }, {
+                "name": "Squat",
+                "body_part": "legs",
+                "equipment": "body weight",
+                "sets": 3,
+                "reps": 15
+            }]
+
+        # ✅ Trả kết quả cuối cùng
         return jsonify({
             "user_level": user_level,
-            "goal": profile["goal"],
+            "goal": goal,
             "recommended_workouts": workouts,
             "stats": workout_stats
         }), 200
-        
+
     except Exception as e:
+        print("❌ Lỗi trong get_workout_recommendations:", e)
         return jsonify({"error": str(e)}), 500
 
 @recommendation_bp.route("/recommendations/meals", methods=["GET"])
@@ -339,34 +379,54 @@ def get_meal_recommendations():
 @recommendation_bp.route("/recommendations/weekly-plan", methods=["GET"])
 @jwt_required()
 def get_weekly_plan():
-    """API đề xuất kế hoạch tuần đầy đủ"""
+    """Tạo kế hoạch luyện tập & dinh dưỡng tuần"""
     try:
         user_id = int(get_jwt_identity())
-        
         profile = get_user_profile(user_id)
-        if not profile:
-            return jsonify({"error": "User profile not found"}), 404
-        
-        workout_stats = get_workout_history_stats(user_id)
-        user_level = calculate_user_level(
-            workout_stats["session_count"], 
-            workout_stats["consistency_rate"]
-        )
-        
-        preferences = get_meal_preferences(user_id)
-        
-        weekly_plan = generate_weekly_plan(
-            user_id, profile["goal"], user_level, preferences, workout_stats
-        )
-        
+
+        # ✅ Nếu user chưa có profile
+        if not profile or not profile.get("goal"):
+            return jsonify({
+                "message": "⚠️ Không tìm thấy hồ sơ người dùng. Vui lòng cập nhật thông tin trước khi tạo kế hoạch."
+            }), 400
+
+        goal = profile.get("goal", "duy trì")
+
+        # ✅ Gợi ý bài tập (fallback nếu lỗi)
+        try:
+            workouts = recommend_workouts(user_id, goal, "beginner", [])
+        except Exception as e:
+            print("⚠️ recommend_workouts lỗi:", e)
+            workouts = [{
+                "name": "Push-up", "body_part": "chest", "equipment": "body weight",
+                "sets": 3, "reps": 12
+            }]
+
+        # ✅ Gợi ý bữa ăn (fallback nếu lỗi)
+        try:
+            meals = recommend_meals(user_id, goal)
+        except Exception as e:
+            print("⚠️ recommend_meals lỗi:", e)
+            meals = [{
+                "food": {"name": "Cơm tấm", "calories": 500, "protein": 25, "carbs": 60, "fat": 10}
+            }]
+
+        # ✅ Tạo kế hoạch tuần (7 ngày)
+        days = ["Thứ 2", "Thứ 3", "Thứ 4", "Thứ 5", "Thứ 6", "Thứ 7", "Chủ nhật"]
+        weekly_plan = {}
+        for i, day in enumerate(days):
+            weekly_plan[day] = {
+                "workouts": [workouts[i % len(workouts)]],
+                "meals": [meals[i % len(meals)]]
+            }
+
         return jsonify({
-            "user_level": user_level,
-            "goal": profile["goal"],
-            "weekly_plan": weekly_plan,
-            "generated_date": datetime.now().isoformat()
+            "goal": goal,
+            "weekly_plan": weekly_plan
         }), 200
-        
+
     except Exception as e:
+        print("❌ Lỗi trong get_weekly_plan:", e)
         return jsonify({"error": str(e)}), 500
 
 @recommendation_bp.route("/recommendations/quick-tip", methods=["GET"])

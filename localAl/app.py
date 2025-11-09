@@ -5,15 +5,18 @@ logging.basicConfig(level=logging.DEBUG)
 from flask import Flask, render_template, send_from_directory, jsonify
 from flask_jwt_extended import JWTManager
 from flask_cors import CORS
-# Import các blueprint - GIỮ NGUYÊN TÊN FILE User_service.py
-from User_service import user_bp, blacklist   # ⚡ import cả blacklist
-from ChatService import chat_bp   # Giữ nguyên ChatService
-from Workout_service import workout_bp  # Giữ nguyên Workout_service
-from Foods_service import Foods_bp  # Giữ nguyên Foods_service
-from Progress_service import progress_bp  # Giữ nguyên Progress_service
-from Recommendation_service import recommendation_bp  # Giữ nguyên Recommendation_service
-from Plan_service import plan_bp  # 🆕 THÊM DÒNG NÀY
-# 🚀 KHỞI TẠO FLASK APP
+from User_service import user_bp, blacklist   
+from ChatService import chat_bp   
+from Workout_service import workout_bp  
+from Foods_service import Foods_bp 
+from Progress_service import progress_bp  
+from Recommendation_service import recommendation_bp  
+from Plan_service import plan_bp  
+from Preference_service import preference_bp
+from Notification_service import notification_bp
+from Analytics_service import analytics_bp
+from Metrics_service import metrics_bp
+from Adaptive_service import adaptive_bp
 app = Flask(__name__,
     static_folder='C:/Users/trant/OneDrive/Desktop/FinalProject/frontend',
     template_folder='C:/Users/trant/OneDrive/Desktop/FinalProject/frontend'
@@ -42,6 +45,11 @@ app.register_blueprint(Foods_bp, url_prefix='/api')
 app.register_blueprint(progress_bp, url_prefix='/api')
 app.register_blueprint(recommendation_bp, url_prefix='/api')
 app.register_blueprint(plan_bp, url_prefix="/api")
+app.register_blueprint(preference_bp, url_prefix="/api")
+app.register_blueprint(notification_bp, url_prefix="/api") 
+app.register_blueprint(analytics_bp, url_prefix="/api")
+app.register_blueprint(metrics_bp, url_prefix="/api")
+app.register_blueprint(adaptive_bp, url_prefix="/api")  
 # ✅ CÁC ROUTE CỦA ỨNG DỤNG CHÍNH
 @app.route('/')
 def serve_home():
